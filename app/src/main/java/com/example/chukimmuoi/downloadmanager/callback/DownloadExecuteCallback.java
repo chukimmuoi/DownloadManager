@@ -56,19 +56,19 @@ public class DownloadExecuteCallback extends DownloadCallback {
 
         LogUtils.i(TAG, "onProgress: " + downloadId);
 
-        int progress = (int) (bytesWritten * 100f/totalBytes);
+        int progress = (int) (bytesWritten * 100f / totalBytes);
         progress = progress == 100 ? 0 : progress;
 
         long currentTimestamp = System.currentTimeMillis();
 
+        int speed;
         int deltaTimes = (int) (currentTimestamp - startTimestamp + 1);
-        int speed      = (int) ((bytesWritten - startSize) * 1000 / deltaTimes) / 1024;
+        speed          = (int) ((bytesWritten - startSize) * 1000 / deltaTimes) / 1024;
 
         startSize = bytesWritten;
 
+        mTextView.setText(progress + "%, " + speed + " kb/s");
         mProgressBar.setProgress(progress);
-        mTextView.setText(speed + " kb/s");
-
     }
 
     @Override
