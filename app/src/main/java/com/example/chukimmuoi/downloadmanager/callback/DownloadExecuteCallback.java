@@ -61,9 +61,8 @@ public class DownloadExecuteCallback extends DownloadCallback {
 
         long currentTimestamp = System.currentTimeMillis();
 
-        int speed;
         int deltaTimes = (int) (currentTimestamp - startTimestamp + 1);
-        speed          = (int) ((bytesWritten - startSize) * 1000 / deltaTimes) / 1024;
+        int speed      = (int) ((bytesWritten - startSize) * 1000 / deltaTimes) / 1024;
 
         startSize = bytesWritten;
 
