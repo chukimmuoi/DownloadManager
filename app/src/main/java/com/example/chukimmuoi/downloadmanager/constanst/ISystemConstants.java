@@ -10,7 +10,7 @@ package com.example.chukimmuoi.downloadmanager.constanst;
  * Created by chukimmuoi on 10/01/2017.
  */
 
-public interface SystemConstants {
+public interface ISystemConstants {
 
     public static final boolean IS_DEBUG = true;
 }

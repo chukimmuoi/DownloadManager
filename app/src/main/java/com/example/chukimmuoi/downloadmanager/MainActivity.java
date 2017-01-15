@@ -9,16 +9,16 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.coolerfall.download.Priority;
-import com.example.chukimmuoi.downloadmanager.constanst.DownloadConstants;
-import com.example.chukimmuoi.downloadmanager.constanst.SystemConstants;
+import com.example.chukimmuoi.downloadmanager.constanst.IDownloadConstants;
+import com.example.chukimmuoi.downloadmanager.constanst.ISystemConstants;
 import com.example.chukimmuoi.downloadmanager.manager.DownloadFileManager;
 import com.example.chukimmuoi.downloadmanager.utils.LogUtils;
 
 import java.io.File;
 
 public class MainActivity extends AppCompatActivity
-        implements SystemConstants,
-        DownloadConstants,
+        implements ISystemConstants,
+        IDownloadConstants,
         View.OnClickListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();

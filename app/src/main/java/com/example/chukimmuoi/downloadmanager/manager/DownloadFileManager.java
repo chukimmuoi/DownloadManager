@@ -14,6 +14,7 @@ import com.coolerfall.download.OkHttpDownloader;
 import com.coolerfall.download.Priority;
 import com.coolerfall.download.URLDownloader;
 import com.example.chukimmuoi.downloadmanager.callback.DownloadExecuteCallback;
+import com.example.chukimmuoi.downloadmanager.constanst.IDownloadConstants;
 import com.example.chukimmuoi.downloadmanager.utils.LogUtils;
 
 import java.io.File;
@@ -32,7 +33,7 @@ import pub.devrel.easypermissions.EasyPermissions;
  * Created by chukimmuoi on 15/01/2017.
  */
 
-public class DownloadFileManager {
+public class DownloadFileManager implements IDownloadConstants {
 
     private final String TAG = DownloadFileManager.class.getSimpleName();
 
@@ -147,9 +148,9 @@ public class DownloadFileManager {
                 DownloadRequest request = new DownloadRequest.Builder()
                         .url(url)
                         .downloadCallback(new DownloadExecuteCallback(progressBar, textView))
-                        .retryTime(5)
-                        .retryInterval(3, TimeUnit.SECONDS)
-                        .progressInterval(1, TimeUnit.SECONDS)
+                        .retryTime(TIME_RETRY)
+                        .retryInterval(TIME_RETRY, TimeUnit.SECONDS)
+                        .progressInterval(TIME_UPDATE_PROGRESS, TimeUnit.SECONDS)
                         .priority(priority)
                         .allowedNetworkTypes(DownloadRequest.NETWORK_WIFI)
                         .destinationDirectory(directory)
@@ -173,9 +174,9 @@ public class DownloadFileManager {
                 DownloadRequest request = new DownloadRequest.Builder()
                         .url(url)
                         .downloadCallback(new DownloadExecuteCallback(progressBar, textView))
-                        .retryTime(5)
-                        .retryInterval(3, TimeUnit.SECONDS)
-                        .progressInterval(1, TimeUnit.SECONDS)
+                        .retryTime(TIME_RETRY)
+                        .retryInterval(TIME_RETRY, TimeUnit.SECONDS)
+                        .progressInterval(TIME_UPDATE_PROGRESS, TimeUnit.SECONDS)
                         .priority(priority)
                         .allowedNetworkTypes(DownloadRequest.NETWORK_WIFI)
                         .destinationFilePath(filePath)
@@ -199,9 +200,9 @@ public class DownloadFileManager {
                 DownloadRequest request = new DownloadRequest.Builder()
                         .url(url)
                         .downloadCallback(new DownloadExecuteCallback(progressBar, textView))
-                        .retryTime(5)
-                        .retryInterval(3, TimeUnit.SECONDS)
-                        .progressInterval(1, TimeUnit.SECONDS)
+                        .retryTime(TIME_RETRY)
+                        .retryInterval(TIME_RETRY, TimeUnit.SECONDS)
+                        .progressInterval(TIME_UPDATE_PROGRESS, TimeUnit.SECONDS)
                         .priority(priority)
                         .allowedNetworkTypes(DownloadRequest.NETWORK_WIFI)
                         .build();
