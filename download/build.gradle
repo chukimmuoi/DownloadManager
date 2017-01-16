@@ -1,0 +1,21 @@
+apply plugin: 'com.android.library'
+
+android {
+	compileSdkVersion versions.compileSdk
+	buildToolsVersion versions.buildTools
+
+	buildTypes {
+		release {
+			minifyEnabled false
+			proguardFiles 'proguard-rules.pro'
+		}
+	}
+}
+
+dependencies {
+	provided libraries.supportAnnotation
+	provided libraries.okHttp3
+
+	testCompile testingLibraries.robolectric
+	testCompile testingLibraries.mockWebServer
+}

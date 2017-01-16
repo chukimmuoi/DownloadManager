@@ -18,6 +18,25 @@ allprojects {
     }
 }
 
+ext {
+    versions = [compileSdk: 25,
+                buildTools: '25.0.2',
+                minSdk    : 15,
+                targetSdk : 25]
+
+    libraries = [
+            appcompatv7       : 'com.android.support:appcompat-v7:25.1.0',
+            supportAnnotation : 'com.android.support:support-annotations:25.1.0',
+            okHttp3           : 'com.squareup.okhttp3:okhttp:3.4.1',
+            loggingInterceptor: 'com.squareup.okhttp3:logging-interceptor:3.4.1',
+            easypermissions   : 'pub.devrel:easypermissions:0.2.0'
+    ]
+
+    testingLibraries = [robolectric  : 'org.robolectric:robolectric:3.1.2',
+                        mock         : 'org.mockito:mockito-core:1.9.5',
+                        mockWebServer: 'com.squareup.okhttp3:mockwebserver:3.4.1']
+}
+
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
