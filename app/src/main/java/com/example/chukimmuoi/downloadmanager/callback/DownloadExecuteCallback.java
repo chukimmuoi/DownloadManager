@@ -56,7 +56,7 @@ public class DownloadExecuteCallback extends DownloadCallback {
 
         LogUtils.i(TAG, "onProgress: " + downloadId);
 
-        int progress = (int) (bytesWritten * 100f / totalBytes);
+        int progress = Math.round(bytesWritten * 100f / totalBytes);
         progress = progress == 100 ? 0 : progress;
 
         long currentTimestamp = System.currentTimeMillis();
