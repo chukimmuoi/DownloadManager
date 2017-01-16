@@ -15,7 +15,4 @@ android {
 dependencies {
 	provided libraries.supportAnnotation
 	provided libraries.okHttp3
-
-	testCompile testingLibraries.robolectric
-	testCompile testingLibraries.mockWebServer
 }

@@ -21,14 +21,11 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
+
     compile libraries.appcompatv7
     compile libraries.okHttp3
     compile libraries.loggingInterceptor
     compile libraries.easypermissions
 
-    testCompile 'junit:junit:4.12'
     compile project(path: ':download')
 }
