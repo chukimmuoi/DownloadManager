@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.coolerfall.download.DownloadCallback;
 import com.coolerfall.download.Priority;
 import com.example.chukimmuoi.downloadmanager.constanst.IDownloadConstants;
 import com.example.chukimmuoi.downloadmanager.constanst.ISystemConstants;
@@ -60,9 +61,69 @@ public class MainActivity extends AppCompatActivity
                 + File.separator + "DownloadManager";
 
         mDownloadFileManager.onStartDownload(this, INDEX_DOWNLOAD_FIRST, URL_DOWNLOAD_FIRST,
-                mProgressBar, mTextView,
                 Priority.NORMAL,
-                destination);
+                destination, new DownloadCallback() {
+
+                    private long startTimestamp = 0;
+
+                    private long startSize      = 0;
+
+                    @Override
+                    public void onStart(int downloadId, long totalBytes) {
+                        super.onStart(downloadId, totalBytes);
+
+                        LogUtils.i(TAG, "onProgress: downloadId = " + downloadId
+                                + ", totalBytes = " + totalBytes);
+
+                        startTimestamp = System.currentTimeMillis();
+                    }
+
+                    @Override
+                    public void onRetry(int downloadId) {
+                        super.onRetry(downloadId);
+
+                        LogUtils.i(TAG, "onProgress: downloadId = " + downloadId);
+                    }
+
+                    @Override
+                    public void onProgress(int downloadId, long bytesWritten, long totalBytes) {
+                        super.onProgress(downloadId, bytesWritten, totalBytes);
+
+                        LogUtils.i(TAG, "onProgress: downloadId = " + downloadId
+                                + ", bytesWritten = " + bytesWritten
+                                + ", totalBytes = " + totalBytes);
+
+                        int progress = Math.round(bytesWritten * 100f / totalBytes);
+                        progress = progress == 100 ? 0 : progress;
+
+                        long currentTimestamp = System.currentTimeMillis();
+
+                        int deltaTimes = (int) (currentTimestamp - startTimestamp + 1);
+                        int speed      = (int) ((bytesWritten - startSize) * 1000 / deltaTimes) / 1024;
+
+                        startSize = bytesWritten;
+
+                        mTextView.setText(progress + "%, " + speed + " kb/s");
+                        mProgressBar.setProgress(progress);
+                    }
+
+                    @Override
+                    public void onSuccess(int downloadId, String filePath) {
+                        super.onSuccess(downloadId, filePath);
+
+                        LogUtils.i(TAG, "onProgress: downloadId = " + downloadId
+                                + ", filePath = " + filePath);
+                    }
+
+                    @Override
+                    public void onFailure(int downloadId, int statusCode, String errMsg) {
+                        super.onFailure(downloadId, statusCode, errMsg);
+
+                        LogUtils.i(TAG, "onProgress: downloadId = " + downloadId
+                                + ", statusCode = " + statusCode
+                                + ", errMsg = " + errMsg);
+                    }
+                });
     }
 
     @Override

@@ -4,16 +4,14 @@ import android.Manifest;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.SparseIntArray;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
+import com.coolerfall.download.DownloadCallback;
 import com.coolerfall.download.DownloadManager;
 import com.coolerfall.download.DownloadRequest;
 import com.coolerfall.download.Logger;
 import com.coolerfall.download.OkHttpDownloader;
 import com.coolerfall.download.Priority;
 import com.coolerfall.download.URLDownloader;
-import com.example.chukimmuoi.downloadmanager.callback.DownloadExecuteCallback;
 import com.example.chukimmuoi.downloadmanager.constanst.IDownloadConstants;
 import com.example.chukimmuoi.downloadmanager.utils.LogUtils;
 
@@ -65,17 +63,18 @@ public class DownloadFileManager implements IDownloadConstants {
     }
 
     public void onStartDownload(Context context, int index, String url,
-                                ProgressBar progressBar, TextView textView,
                                 Priority priority,
-                                String destinationDirectory) {
-        onStartDownload(context, index, url, progressBar, textView, priority,
-                destinationDirectory, null);
+                                String destinationDirectory,
+                                DownloadCallback downloadCallback) {
+        onStartDownload(context, index, url, priority,
+                destinationDirectory, null,
+                downloadCallback);
     }
 
     public void onStartDownload(Context context, int index, String url,
-                                ProgressBar progressBar, TextView textView,
                                 Priority priority,
-                                String destinationDirectory, String filePath) {
+                                String destinationDirectory, String filePath,
+                                DownloadCallback downloadCallback) {
         if (!EasyPermissions.hasPermissions(context, PERMISSION)) {
             EasyPermissions.requestPermissions(this, "Download need external permission", 0x01,
                     PERMISSION);
@@ -88,15 +87,13 @@ public class DownloadFileManager implements IDownloadConstants {
                 file.mkdirs();
             }
             if (TextUtils.isEmpty(filePath)) {
-                startDownloadDirectory(index, url, progressBar, textView, priority,
-                        destinationDirectory);
+                startDownloadDirectory(index, url, priority, destinationDirectory, downloadCallback);
             } else {
                 String destinationFilePath = destinationDirectory + File.separator + filePath;
-                startDownloadFilePath(index, url, progressBar, textView, priority,
-                        destinationFilePath);
+                startDownloadFilePath(index, url, priority, destinationFilePath, downloadCallback);
             }
         } else {
-            startDownloadDefault(index, url, progressBar, textView, priority);
+            startDownloadDefault(index, url, priority, downloadCallback);
         }
     }
 
@@ -137,9 +134,9 @@ public class DownloadFileManager implements IDownloadConstants {
     }
 
 
-    private void startDownloadDirectory(int index, String url,
-                                        ProgressBar progressBar, TextView textView,
-                                        Priority priority, String directory) {
+    private void startDownloadDirectory(int index, String url, Priority priority,
+                                        String directory,
+                                        DownloadCallback downloadCallback) {
         try {
             int id = ids.get(index, -1);
             if (mDownloadManager.isDownloading(id)) {
@@ -147,7 +144,7 @@ public class DownloadFileManager implements IDownloadConstants {
             } else {
                 DownloadRequest request = new DownloadRequest.Builder()
                         .url(url)
-                        .downloadCallback(new DownloadExecuteCallback(progressBar, textView))
+                        .downloadCallback(downloadCallback)
                         .retryTime(TIME_RETRY)
                         .retryInterval(TIME_RETRY, TimeUnit.SECONDS)
                         .progressInterval(TIME_UPDATE_PROGRESS, TimeUnit.SECONDS)
@@ -163,9 +160,9 @@ public class DownloadFileManager implements IDownloadConstants {
         }
     }
 
-    private void startDownloadFilePath(int index, String url,
-                                       ProgressBar progressBar, TextView textView,
-                                       Priority priority, String filePath) {
+    private void startDownloadFilePath(int index, String url, Priority priority,
+                                       String filePath,
+                                       DownloadCallback downloadCallback) {
         try {
             int id = ids.get(index, -1);
             if (mDownloadManager.isDownloading(id)) {
@@ -173,7 +170,7 @@ public class DownloadFileManager implements IDownloadConstants {
             } else {
                 DownloadRequest request = new DownloadRequest.Builder()
                         .url(url)
-                        .downloadCallback(new DownloadExecuteCallback(progressBar, textView))
+                        .downloadCallback(downloadCallback)
                         .retryTime(TIME_RETRY)
                         .retryInterval(TIME_RETRY, TimeUnit.SECONDS)
                         .progressInterval(TIME_UPDATE_PROGRESS, TimeUnit.SECONDS)
@@ -189,9 +186,8 @@ public class DownloadFileManager implements IDownloadConstants {
         }
     }
 
-    private void startDownloadDefault(int index, String url,
-                                      ProgressBar progressBar, TextView textView,
-                                      Priority priority) {
+    private void startDownloadDefault(int index, String url, Priority priority,
+                                      DownloadCallback downloadCallback) {
         try {
             int id = ids.get(index, -1);
             if (mDownloadManager.isDownloading(id)) {
@@ -199,7 +195,7 @@ public class DownloadFileManager implements IDownloadConstants {
             } else {
                 DownloadRequest request = new DownloadRequest.Builder()
                         .url(url)
-                        .downloadCallback(new DownloadExecuteCallback(progressBar, textView))
+                        .downloadCallback(downloadCallback)
                         .retryTime(TIME_RETRY)
                         .retryInterval(TIME_RETRY, TimeUnit.SECONDS)
                         .progressInterval(TIME_UPDATE_PROGRESS, TimeUnit.SECONDS)
